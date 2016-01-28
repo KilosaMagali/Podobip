@@ -37,6 +37,9 @@ public class ViewController extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         setupItemsAdapter();
+
+        Intent intent = new Intent(ViewController.this, AppService.class);
+        startService(intent);
     }
 
     @Override

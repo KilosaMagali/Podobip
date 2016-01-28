@@ -25,13 +25,12 @@ public class SoundNotifyer implements INotifyer {
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         note.sound = alarmSound;
-        note.defaults |= Notification.DEFAULT_VIBRATE;
         note.flags |= Notification.FLAG_AUTO_CANCEL;
     }
 
     @Override
     public void showNotification() {
         Log.d(TAG, "notify");
-        manager.notify(SOUND_NOTIFICATION_ID, note);
+        manager.notify(SOUND_NOTIFICATION_ID++, note);
     }
 }
