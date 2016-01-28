@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.text.DecimalFormat;
@@ -42,6 +43,8 @@ public class ViewController extends AppCompatActivity
     private boolean stepsWidget = true,caloriesWidget = true,distanceWidget = true,positionWidget = true, durationWidget = true ;
     private String[] items = new String[] {};
     private String[] content = new String[] {};
+    private TextView totalDuration, totalDistance, largeNbSteps;
+
 
     ServiceConnection connection;
     StepAndroidService stepService;
@@ -68,7 +71,9 @@ public class ViewController extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        totalDuration = (TextView)findViewById(R.id.duree);
+        totalDistance = (TextView)findViewById(R.id.distance);
+        largeNbSteps = (TextView)findViewById(R.id.largeSteps);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -161,6 +166,9 @@ public class ViewController extends AppCompatActivity
 
     public void setupItemsAdapter() {
         GridView gridView = (GridView)findViewById(R.id.grid_view);
+        totalDistance.setText(distance +" Km");
+        totalDuration.setText("00h"+duration);
+        largeNbSteps.setText(nbSteps+"");
         //String[] items = new String[] {"Calories", "Distance", "Steps", "Walking time"};
         //String[] content = new String[] {nbCalories +" Cal.", distance+" m", nbSteps +" Steps", duration+" min" };
         ArrayList<String> tempoItems = new ArrayList<>();
