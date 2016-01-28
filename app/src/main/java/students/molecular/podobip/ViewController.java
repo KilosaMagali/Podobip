@@ -6,10 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,28 +16,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
-import android.widget.Toast;
 
-import students.molecular.podobip.services.StepAndroidService;
+import students.molecular.podobip.listener.StepListener;
 
 public class ViewController extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, StepListener {
 
     ServiceConnection connection;
     StepAndroidService stepService;
 
     public ViewController() {
-        private StepAndroidService.ICallback mCallback = new StepAndroidService.ICallback() {
-
-        };
-
         connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 stepService = ((StepAndroidService.StepBinder)service).getService();
 
-                stepService.registerCallback(mCallback);
-                stepService.reloadSettings();
+                stepService.registerCallback(ViewController.this);
             }
 
             @Override
@@ -74,6 +65,7 @@ public class ViewController extends AppCompatActivity
 
         Intent intent = new Intent(ViewController.this, StepAndroidService.class);
         startService(intent);
+        bindStepService();
 
         //stopService(intent);
     }
@@ -168,5 +160,9 @@ public class ViewController extends AppCompatActivity
 
     private void bindStepService() {
         bindService(new Intent(ViewController.this, StepAndroidService.class), connection, Context.BIND_AUTO_CREATE + Context.BIND_DEBUG_UNBIND);
+    }
+
+    @Override
+    public void onStepEvent() {
     }
 }

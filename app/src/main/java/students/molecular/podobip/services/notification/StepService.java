@@ -43,7 +43,6 @@ public class StepService implements IStepService, SensorEventListener {
         mYOffset = h * 0.5f;
         mScale[0] = -(h * 0.5f * (1.0f / (SensorManager.STANDARD_GRAVITY * 2)));
         mScale[1] = -(h * 0.5f * (1.0f / (SensorManager.MAGNETIC_FIELD_EARTH_MAX)));
-        Log.i(TAG, "fdgjdfkghdkjsfhgjfdhgjdffffffffffffffffffffffffffffffffffffffffffffffsgsdqqqqqqqqqqqqqqqqqqqqqqq");
     }
 
     public void setSensitivity(float sensitivity) {
@@ -52,7 +51,6 @@ public class StepService implements IStepService, SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.i(TAG, "step");
         Sensor sensor = event.sensor;
         synchronized (this) {
             if (sensor.getType() == Sensor.TYPE_ORIENTATION) {

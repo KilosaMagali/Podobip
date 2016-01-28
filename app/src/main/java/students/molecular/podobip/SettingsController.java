@@ -1,6 +1,11 @@
 package students.molecular.podobip;
 
+import android.app.Service;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.os.Binder;
+import android.os.IBinder;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import students.molecular.podobip.listener.StepListener;
+import students.molecular.podobip.services.notification.StepService;
 
 public class SettingsController extends AppCompatActivity {
 

@@ -1,12 +1,13 @@
-package students.molecular.podobip.services;
+package students.molecular.podobip;
 
 import android.app.Service;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
+import students.molecular.podobip.listener.StepListener;
 import students.molecular.podobip.services.notification.StepService;
 
 public class StepAndroidService extends Service {
@@ -35,12 +36,20 @@ public class StepAndroidService extends Service {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        System.out.println("Service binded");
-        return null;
+        return new StepBinder();
     }
 
     @Override
     public void onDestroy() {
-        System.out.println("Service destroyed");
+    }
+
+    public void registerCallback(StepListener l) {
+        stepService.addStepListener(10, l);
+    }
+
+    public class StepBinder extends Binder {
+        StepAndroidService getService() {
+            return StepAndroidService.this;
+        }
     }
 }
