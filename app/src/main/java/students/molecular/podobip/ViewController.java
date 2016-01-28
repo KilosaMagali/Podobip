@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.GridView;
 
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 import students.molecular.podobip.listener.StepListener;
 
@@ -27,6 +28,12 @@ public class ViewController extends AppCompatActivity
 
     public static final int WIDGET_ACTIVITY = 1;
     public static final int SETTINGS_ACTIVITY = 2;
+
+    //For a mean human
+    public static final double METERS_PER_STEP = 0.75;
+    public static final double CALORIES_PER_STEP = 0.03;
+    public static final double TIME_PER_STEP = 0.5;
+
     public static NOTIF_MODE mode = NOTIF_MODE.VIBRATE;
     private static int nbSteps = 0;
     private static double duration = 0;
@@ -190,11 +197,12 @@ public class ViewController extends AppCompatActivity
 
     @Override
     public void onStepEvent() {
-            nbSteps++;
-            nbCalories = Math.round((nbSteps * 0.03) * 100.0)/100.0;
-            distance = Math.round ((nbSteps * 0.75) * 100.0);
-            duration = Math.round((((nbSteps * 3) / 60.0) * 100.0)/100.0);
-            setupItemsAdapter();
+        nbSteps++;
+
+        nbCalories = Math.round((nbCalories+CALORIES_PER_STEP) * 100.0)/100.0;
+        distance = Math.round((distance+METERS_PER_STEP) * 100.0)/100.0;
+        duration = Math.round((duration+TIME_PER_STEP/60) * 100.0)/100.0;
+        setupItemsAdapter();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
