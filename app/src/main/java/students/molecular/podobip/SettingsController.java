@@ -93,15 +93,30 @@ public class SettingsController extends AppCompatActivity {
     }
 
     public void onSoundTouched(View view) {
-        toggleButton(view);
+        ToggleButton button = (ToggleButton) view;
+
+        if(button.isChecked()){
+            vibrationToggle.setChecked(false);
+            lightToggle.setChecked(false);
+        }
     }
 
     public void onVibrationTouched(View view) {
-        toggleButton(view);
+        ToggleButton button = (ToggleButton) view;
+
+        if(button.isChecked()){
+            soundToggle.setChecked(false);
+            lightToggle.setChecked(false);
+        }
     }
 
     public void onLightTouched(View view) {
-        toggleButton(view);
+        ToggleButton button = (ToggleButton) view;
+
+        if(button.isChecked()){
+            soundToggle.setChecked(false);
+            vibrationToggle.setChecked(false);
+        }
     }
 
     public void onStepIncremented(View view){
@@ -119,14 +134,6 @@ public class SettingsController extends AppCompatActivity {
         if(currentValue > 1){
             currentValue--;
             stepsLabel.setText(String.valueOf(currentValue));
-        }
-    }
-
-    private void toggleButton(View view) {
-        ToggleButton button = (ToggleButton) view;
-
-        if(button.isChecked() && autoToggle.isChecked()){
-            button.setChecked(false);
         }
     }
 }
