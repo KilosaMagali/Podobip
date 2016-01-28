@@ -26,6 +26,10 @@ public class ViewController extends AppCompatActivity
     public static final int WIDGET_ACTIVITY = 1;
     public static final int SETTINGS_ACTIVITY = 2;
     public static NOTIF_MODE mode = NOTIF_MODE.VIBRATE;
+    private static int nbSteps = 0;
+    private static double duration = 0;
+    private static double nbCalories = 0;
+    private static double distance = 0;
 
     ServiceConnection connection;
     StepAndroidService stepService;
@@ -146,7 +150,7 @@ public class ViewController extends AppCompatActivity
     public void setupItemsAdapter() {
         GridView gridView = (GridView)findViewById(R.id.grid_view);
         String[] items = new String[] {"Calories", "Distance", "Steps", "Walking time"};
-        String[] content = new String[] {"100KCal.", "20Km", "500 Steps","120min" };
+        String[] content = new String[] {nbCalories +" Cal.", distance+" m", nbSteps +" Steps", duration+" min" };
         ItemAdapter itemAdapter = new ItemAdapter(getApplicationContext(),items,content);
         gridView.setAdapter(itemAdapter);
     }
@@ -157,7 +161,11 @@ public class ViewController extends AppCompatActivity
 
     @Override
     public void onStepEvent() {
-
+            nbSteps++;
+            nbCalories = Math.round((nbSteps * 0.03) * 100.0)/100.0;
+            distance = Math.round((nbSteps * 0.75) * 100.0);
+            duration = Math.round((((nbSteps * 3) / 60.0) * 100.0)/100.0);
+            setupItemsAdapter();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
