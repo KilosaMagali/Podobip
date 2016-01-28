@@ -4,6 +4,12 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_add">Widgets</string>
+
     <string name="aboutApp">About</string>
+
+    <string name="stepsLabel">Steps counter</string>
+    <string name="caloriesLabel">Spent calories</string>
+    <string name="distanceLabel">Distance</string>
+    <string name="positionLabel">Position</string>
 </resources>

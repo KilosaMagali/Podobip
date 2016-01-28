@@ -49,6 +49,7 @@ public class ViewController extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        //Toast.makeText(ViewController.this, "Item", Toast.LENGTH_LONG);
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -61,11 +62,10 @@ public class ViewController extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add) {
             displayWidgetView();
             return true;
         }
-        //Toast.makeText(ViewController.this, "Widgets settings", Toast.LENGTH_SHORT).show();
         
 
         return super.onOptionsItemSelected(item);
