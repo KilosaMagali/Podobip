@@ -77,13 +77,17 @@ public class ViewController extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-       /* if (id == R.id.nav_camera) {
+        if (id == R.id.nav_manage) {
+            displaySettingsView();
+        } else if(id == R.id.about) {
+            displayAboutView();
+        }
+
+        /*if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
@@ -98,6 +102,16 @@ public class ViewController extends AppCompatActivity
 
     private void displayWidgetView() {
         Intent widgetIntent = new Intent(this, WidgetController.class);
+        startActivity(widgetIntent);
+    }
+
+    private void displayAboutView() {
+        Intent widgetIntent = new Intent(this, AboutController.class);
+        startActivity(widgetIntent);
+    }
+
+    private void displaySettingsView() {
+        Intent widgetIntent = new Intent(this, SettingsController.class);
         startActivity(widgetIntent);
     }
 }

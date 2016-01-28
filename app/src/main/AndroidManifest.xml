@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--Root activity-->
+        <!-- Root activity -->
         <activity
             android:name=".ViewController"
             android:label="@string/app_name"
@@ -21,11 +21,15 @@
             </intent-filter>
         </activity>
 
-        <!--Child activity-->
+        <!-- Child activity -->
         <activity android:name=".WidgetController">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ViewController" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ViewController" />
+        </activity>
+        <activity android:name=".AboutController">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ViewController" />
+        </activity>
+        <activity android:name=".SettingsController">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ViewController" />
         </activity>
     </application>
 
