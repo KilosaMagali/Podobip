@@ -16,7 +16,7 @@ public class ItemAdapter extends BaseAdapter {
     String [] nameItem;
     Context context;
     String [] textItem;
-   // String fontPath = "fonts/Face Your Fears.ttf";
+    String fontPath = "JLSDataGothicC_NC.otf";
 
     private static LayoutInflater inflater=null;
     public ItemAdapter(Context context, String[] headers, String[] content) {
@@ -59,8 +59,8 @@ public class ItemAdapter extends BaseAdapter {
 
         header.setText(nameItem[position]);
         text.setText(textItem[position]);
-        //Typeface tf = Typeface.createFromAsset(context.getAssets(), fontPath);
-        //text.setTypeface(tf);
+        Typeface tf = Typeface.createFromAsset(context.getAssets(), fontPath);
+        text.setTypeface(tf);
 
         return rowView;
     }
