@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -23,10 +22,10 @@ import students.molecular.podobip.listener.StepListener;
 /**
  * Created by meradi on 28/01/16.
  */
-public class GPSTracker extends Service implements StepListener, LocationListener {
+public class GPSTracker implements StepListener, LocationListener {
 
     private static String TAG = GPSTracker.class.getSimpleName();
-    private ArrayList<LatLng> positions = new ArrayList<>();
+    private ArrayList<LatLng> positions;
     private final Context mContext;
     boolean isGPSEnabled = true;
     boolean isNetworkEnabled = true;
@@ -37,28 +36,31 @@ public class GPSTracker extends Service implements StepListener, LocationListene
     private static final long MIN_TIME_BW_UPDATES = 1000;
     protected LocationManager locationManager;
 
-    public GPSTracker(IStepService stepService, Context context) {
-        stepService.addStepListener(20, this);
-        mContext = context;
+    public GPSTracker(Context context) {
+        this.mContext = context;
+        getLocation();
+        positions = new ArrayList<>();
+        getLocation();
     }
 
     @Override
     public void onStepEvent() {
         Log.d(TAG, "step event");
         Log.d(TAG, "current location is " + location);
-        positions.add(new LatLng(location.getLatitude(), location.getLongitude()));
+        if (location == null)
+            getLocation();
+        if (location != null) {
+            new LatLng(location.getLatitude(), location.getLongitude());
+            System.out.println(positions);
+            positions.add(new LatLng(location.getLatitude(), location.getLongitude()));
+        }
 
-    }
-
-    public GPSTracker(Context context) {
-        this.mContext = context;
-        getLocation();
     }
 
     public void getLocation() {
         try {
             locationManager = (LocationManager) mContext
-                    .getSystemService(LOCATION_SERVICE);
+                    .getSystemService(mContext.LOCATION_SERVICE);
 
             isGPSEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -73,7 +75,8 @@ public class GPSTracker extends Service implements StepListener, LocationListene
                             MIN_TIME_BW_UPDATES,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                     Log.d("Network", "Network");
-                    if (locationManager != null) {
+                    if (locationManager != null && locationManager
+                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     }
@@ -85,7 +88,8 @@ public class GPSTracker extends Service implements StepListener, LocationListene
                                 0,
                                 0, this);
                         Log.d("GPS Enabled", "GPS Enabled");
-                        if (locationManager != null) {
+                        if (locationManager != null && locationManager
+                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
                             location = locationManager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);
                         }
@@ -151,9 +155,8 @@ public class GPSTracker extends Service implements StepListener, LocationListene
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }
 
-
-    @Override
-    public IBinder onBind(Intent arg0) {
-        return null;
+    public ArrayList<LatLng> getPositions() {
+        return positions;
     }
+
 }

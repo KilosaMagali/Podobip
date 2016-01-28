@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import students.molecular.podobip.listener.StepListener;
-import students.molecular.podobip.services.notification.StepService;
+import students.molecular.podobip.services.StepService;
 
 public class SettingsController extends AppCompatActivity {
 

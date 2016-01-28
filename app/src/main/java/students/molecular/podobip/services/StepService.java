@@ -1,4 +1,4 @@
-package students.molecular.podobip.services.notification;
+package students.molecular.podobip.services;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

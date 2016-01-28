@@ -21,7 +21,7 @@ public class LightNotifier implements INotifyer {
     private final NotificationManager nm;
     private static int LED_NOTIFICATION_ID = 1;
     private static boolean on = false;
-    Timer timer ;
+    Timer timer;
     private static Camera cam = null;
     private long start;
 
@@ -55,6 +55,11 @@ public class LightNotifier implements INotifyer {
         timer.scheduleAtFixedRate(task, 0, 500);
     }
 
+    @Override
+    public boolean isPossible() {
+        return true;
+    }
+
     private synchronized void onFlash() {
         on = !on;
         try {
@@ -72,12 +77,16 @@ public class LightNotifier implements INotifyer {
     }
 
     private void offFlash() {
-        Log.d(TAG, "offflash");
-        on = !on;
-        if (cam != null) {
-            cam.stopPreview();
-            cam.release();
-            cam = null;
+        try {
+            Log.d(TAG, "offflash");
+            on = !on;
+            if (cam != null) {
+                cam.stopPreview();
+                cam.setPreviewCallback(null);
+                cam.release();
+                cam = null;
+            }
+        } catch (Exception e) {
         }
     }
 

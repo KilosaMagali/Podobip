@@ -6,4 +6,6 @@ package students.molecular.podobip.services.notification;
 public interface INotifyer {
 
     void showNotification();
+
+    boolean isPossible();
 }

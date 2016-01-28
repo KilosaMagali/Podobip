@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -34,7 +33,7 @@ public class ViewController extends AppCompatActivity
         connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                stepService = ((StepAndroidService.StepBinder)service).getService();
+                stepService = ((StepAndroidService.StepBinder) service).getService();
 
                 stepService.registerCallback(ViewController.this);
             }
@@ -105,7 +104,7 @@ public class ViewController extends AppCompatActivity
             displayWidgetView();
             return true;
         }
-        
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -118,7 +117,7 @@ public class ViewController extends AppCompatActivity
 
         if (id == R.id.nav_manage) {
             displaySettingsView();
-        } else if(id == R.id.about) {
+        } else if (id == R.id.about) {
             displayAboutView();
         }
 
@@ -144,15 +143,25 @@ public class ViewController extends AppCompatActivity
     }
 
     public void setupItemsAdapter() {
-        GridView gridView = (GridView)findViewById(R.id.grid_view);
-        String[] items = new String[] {"Calories", "Distance", "Steps", "Walking time"};
-        String[] content = new String[] {"100KCal.", "20Km", "500 Steps","120min" };
-        ItemAdapter itemAdapter = new ItemAdapter(getApplicationContext(),items,content);
+        GridView gridView = (GridView) findViewById(R.id.grid_view);
+        String[] items = new String[]{"Calories", "Distance", "Steps", "Walking time"};
+        String[] content = new String[]{"100KCal.", "20Km", "500 Steps", "120min"};
+        ItemAdapter itemAdapter = new ItemAdapter(getApplicationContext(), items, content);
         gridView.setAdapter(itemAdapter);
     }
 
     private void bindStepService() {
         bindService(new Intent(ViewController.this, StepAndroidService.class), connection, Context.BIND_AUTO_CREATE + Context.BIND_DEBUG_UNBIND);
+    }
+
+    private void unbindStepService() {
+        unbindService(connection);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbindStepService();
+        super.onDestroy();
     }
 
     @Override
@@ -162,7 +171,7 @@ public class ViewController extends AppCompatActivity
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case WIDGET_ACTIVITY:
                     handleWidgetViewResult(data);
@@ -189,23 +198,18 @@ public class ViewController extends AppCompatActivity
         boolean vibrate = data.getExtras().getBoolean("vibrate");
         boolean light = data.getExtras().getBoolean("light");
 
-        NOTIF_MODE mode;
-
-        if(automatic){
+        if (automatic) {
             mode = NOTIF_MODE.AUTO;
-        }
-        else if(sound){
+        } else if (sound) {
             mode = NOTIF_MODE.SOUND;
-        }
-        else if(vibrate){
+        } else if (vibrate) {
             mode = NOTIF_MODE.VIBRATE;
-        }
-        else{
+        } else {
             mode = NOTIF_MODE.LIGHT;
         }
     }
 
-    public static NOTIF_MODE getNotificationMode(){
+    public static NOTIF_MODE getNotificationMode() {
         return mode;
     }
 }

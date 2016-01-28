@@ -23,4 +23,11 @@ public class ViberNotifyer implements INotifyer {
         Log.d(TAG, "notify");
         vibrator.vibrate(NB_MILLIS_VIBRATE);
     }
+
+    @Override
+    public boolean isPossible() {
+        return vibrator.hasVibrator();
+    }
+
+
 }

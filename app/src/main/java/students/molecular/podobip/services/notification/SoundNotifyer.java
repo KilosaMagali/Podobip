@@ -33,4 +33,9 @@ public class SoundNotifyer implements INotifyer {
         Log.d(TAG, "notify");
         manager.notify(SOUND_NOTIFICATION_ID++, note);
     }
+
+    @Override
+    public boolean isPossible() {
+        return true;
+    }
 }
