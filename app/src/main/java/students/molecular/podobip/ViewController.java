@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import java.util.ArrayList;
+
 import students.molecular.podobip.listener.StepListener;
 
 public class ViewController extends AppCompatActivity
@@ -30,6 +32,9 @@ public class ViewController extends AppCompatActivity
     private static double duration = 0;
     private static double nbCalories = 0;
     private static double distance = 0;
+    private boolean stepsWidget = true,caloriesWidget = true,distanceWidget = true,positionWidget = true, durationWidget = true ;
+    private String[] items = new String[] {};
+    private String[] content = new String[] {};
 
     ServiceConnection connection;
     StepAndroidService stepService;
@@ -149,8 +154,32 @@ public class ViewController extends AppCompatActivity
 
     public void setupItemsAdapter() {
         GridView gridView = (GridView)findViewById(R.id.grid_view);
-        String[] items = new String[] {"Calories", "Distance", "Steps", "Walking time"};
-        String[] content = new String[] {nbCalories +" Cal.", distance+" m", nbSteps +" Steps", duration+" min" };
+        //String[] items = new String[] {"Calories", "Distance", "Steps", "Walking time"};
+        //String[] content = new String[] {nbCalories +" Cal.", distance+" m", nbSteps +" Steps", duration+" min" };
+        ArrayList<String> tempoItems = new ArrayList<>();
+        ArrayList<String> tempoContent = new ArrayList<>();
+
+        if(stepsWidget) {
+            tempoItems.add("Steps");
+            tempoContent.add(nbSteps +" Steps");
+        }
+        if(caloriesWidget) {
+            tempoItems.add("Calories");
+            tempoContent.add(nbCalories +" Cal.");
+        }
+        if(distanceWidget) {
+            tempoItems.add("Distance");
+            tempoContent.add(distance+" m");
+        }
+        if(positionWidget) {
+
+        }
+        if(durationWidget) {
+            tempoItems.add("Walking time");
+            tempoContent.add(duration+" min");
+        }
+        items = tempoItems.toArray(new String[tempoItems.size()]);
+        content = tempoContent.toArray(new String[tempoContent.size()]);
         ItemAdapter itemAdapter = new ItemAdapter(getApplicationContext(),items,content);
         gridView.setAdapter(itemAdapter);
     }
@@ -163,7 +192,7 @@ public class ViewController extends AppCompatActivity
     public void onStepEvent() {
             nbSteps++;
             nbCalories = Math.round((nbSteps * 0.03) * 100.0)/100.0;
-            distance = Math.round((nbSteps * 0.75) * 100.0);
+            distance = Math.round ((nbSteps * 0.75) * 100.0);
             duration = Math.round((((nbSteps * 3) / 60.0) * 100.0)/100.0);
             setupItemsAdapter();
     }
@@ -183,10 +212,11 @@ public class ViewController extends AppCompatActivity
     }
 
     private void handleWidgetViewResult(Intent data) {
-        boolean stepsWidget = data.getExtras().getBoolean("stepsWidget");
-        boolean caloriesWidget = data.getExtras().getBoolean("caloriesWidget");
-        boolean distanceWidget = data.getExtras().getBoolean("distanceWidget");
-        boolean positionWidget = data.getExtras().getBoolean("positionWidget");
+        stepsWidget = data.getExtras().getBoolean("stepsWidget");
+        caloriesWidget = data.getExtras().getBoolean("caloriesWidget");
+        distanceWidget = data.getExtras().getBoolean("distanceWidget");
+        positionWidget = data.getExtras().getBoolean("positionWidget");
+        setupItemsAdapter();
 
     }
 
