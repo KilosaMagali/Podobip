@@ -36,8 +36,8 @@ public class StepAndroidService extends Service {
     private void registerDetector() {
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(stepService, sensor, SensorManager.SENSOR_DELAY_FASTEST);
-        stepService.addStepListener(10, new NotificationService(mContext));
-        stepService.addStepListener(10, new GPSTracker(mContext));
+        stepService.addStepListener(30, new NotificationService(mContext));
+        stepService.addStepListener(30, new GPSTracker(mContext));
     }
 
     @Override

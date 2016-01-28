@@ -16,6 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import students.molecular.podobip.listener.StepListener;
 
@@ -24,7 +27,22 @@ public class ViewController extends AppCompatActivity
 
     public static final int WIDGET_ACTIVITY = 1;
     public static final int SETTINGS_ACTIVITY = 2;
+
+    //For a mean human
+    public static final double METERS_PER_STEP = 0.75;
+    public static final double CALORIES_PER_STEP = 0.03;
+    public static final double TIME_PER_STEP = 0.5;
+
     public static NOTIF_MODE mode = NOTIF_MODE.VIBRATE;
+    private static int nbSteps = 0;
+    private static double duration = 0;
+    private static double nbCalories = 0;
+    private static double distance = 0;
+    private boolean stepsWidget = true, caloriesWidget = true, distanceWidget = true, positionWidget = true, durationWidget = true;
+    private String[] items = new String[]{};
+    private String[] content = new String[]{};
+    private TextView totalDuration, totalDistance, largeNbSteps;
+
 
     ServiceConnection connection;
     StepAndroidService stepService;
@@ -51,7 +69,9 @@ public class ViewController extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        totalDuration = (TextView) findViewById(R.id.duree);
+        totalDistance = (TextView) findViewById(R.id.distance);
+        largeNbSteps = (TextView) findViewById(R.id.largeSteps);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -144,8 +164,33 @@ public class ViewController extends AppCompatActivity
 
     public void setupItemsAdapter() {
         GridView gridView = (GridView) findViewById(R.id.grid_view);
-        String[] items = new String[]{"Calories", "Distance", "Steps", "Walking time"};
-        String[] content = new String[]{"100KCal.", "20Km", "500 Steps", "120min"};
+        totalDistance.setText(distance + " m");
+        totalDuration.setText("00h" + Math.round(duration) + "min");
+        largeNbSteps.setText(nbSteps + "");
+        ArrayList<String> tempoItems = new ArrayList<>();
+        ArrayList<String> tempoContent = new ArrayList<>();
+
+        if (stepsWidget) {
+            tempoItems.add("Steps");
+            tempoContent.add(nbSteps + " Steps");
+        }
+        if (caloriesWidget) {
+            tempoItems.add("Calories");
+            tempoContent.add(nbCalories + " Cal.");
+        }
+        if (distanceWidget) {
+            tempoItems.add("Distance");
+            tempoContent.add(distance + " m");
+        }
+        if (positionWidget) {
+
+        }
+        if (durationWidget) {
+            tempoItems.add("Walking time");
+            tempoContent.add(duration + " min");
+        }
+        items = tempoItems.toArray(new String[tempoItems.size()]);
+        content = tempoContent.toArray(new String[tempoContent.size()]);
         ItemAdapter itemAdapter = new ItemAdapter(getApplicationContext(), items, content);
         gridView.setAdapter(itemAdapter);
     }
@@ -166,7 +211,14 @@ public class ViewController extends AppCompatActivity
 
     @Override
     public void onStepEvent() {
+        synchronized (this) {
+            nbSteps++;
 
+            nbCalories = Math.round((nbCalories + CALORIES_PER_STEP) * 100.0) / 100.0;
+            distance = Math.round((distance + METERS_PER_STEP) * 100.0) / 100.0;
+            duration = Math.round((duration + TIME_PER_STEP / 60) * 100.0) / 100.0;
+            setupItemsAdapter();
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -184,10 +236,11 @@ public class ViewController extends AppCompatActivity
     }
 
     private void handleWidgetViewResult(Intent data) {
-        boolean stepsWidget = data.getExtras().getBoolean("stepsWidget");
-        boolean caloriesWidget = data.getExtras().getBoolean("caloriesWidget");
-        boolean distanceWidget = data.getExtras().getBoolean("distanceWidget");
-        boolean positionWidget = data.getExtras().getBoolean("positionWidget");
+        stepsWidget = data.getExtras().getBoolean("stepsWidget");
+        caloriesWidget = data.getExtras().getBoolean("caloriesWidget");
+        distanceWidget = data.getExtras().getBoolean("distanceWidget");
+        positionWidget = data.getExtras().getBoolean("positionWidget");
+        setupItemsAdapter();
 
     }
 
