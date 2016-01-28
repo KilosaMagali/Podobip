@@ -4,5 +4,24 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <!--App bar-->
+    <string name="action_add">Widgets</string>
+
+    <!--Lateral view-->
+    <string name="aboutApp">About</string>
+    <string name="settings">Settings</string>
+
+    <!--Widget view-->
+    <string name="stepsLabel">Steps counter</string>
+    <string name="caloriesLabel">Spent calories</string>
+    <string name="distanceLabel">Distance</string>
+    <string name="positionLabel">Position</string>
+
+    <!--Settings view-->
+    <string name="notificationLabel">Notifications</string>
+    <string name="autoLabel">Autodetect</string>
+    <string name="soundLabel">Sounds</string>
+    <string name="vibrationLabel">Vibrations</string>
+    <string name="lightLabel">Light</string>
+    <string name="maxStepsLabel">Max steps</string>
 </resources>
