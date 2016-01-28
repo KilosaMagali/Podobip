@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
 import android.widget.Toast;
 
 public class ViewController extends AppCompatActivity
@@ -34,6 +35,8 @@ public class ViewController extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setupItemsAdapter();
     }
 
     @Override
@@ -105,6 +108,7 @@ public class ViewController extends AppCompatActivity
         startActivity(widgetIntent);
     }
 
+
     private void displayAboutView() {
         Intent widgetIntent = new Intent(this, AboutController.class);
         startActivity(widgetIntent);
@@ -113,5 +117,14 @@ public class ViewController extends AppCompatActivity
     private void displaySettingsView() {
         Intent widgetIntent = new Intent(this, SettingsController.class);
         startActivity(widgetIntent);
+    }
+
+    public void setupItemsAdapter() {
+        GridView gridView = (GridView)findViewById(R.id.grid_view);
+        String[] items = new String[] {"Calories", "Distance", "Steps", "Walking time"};
+        String[] content = new String[] {"100KCal.", "20Km", "500 Steps","120min" };
+        ItemAdapter itemAdapter = new ItemAdapter(getApplicationContext(),items,content);
+        gridView.setAdapter(itemAdapter);
+
     }
 }
