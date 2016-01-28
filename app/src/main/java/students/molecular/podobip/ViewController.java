@@ -20,13 +20,6 @@ import android.widget.GridView;
 
 import students.molecular.podobip.listener.StepListener;
 
-enum NOTIF_MODE {
-    AUTO,
-    VIBRATE,
-    LIGHT,
-    SOUND
-}
-
 public class ViewController extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, StepListener {
 
