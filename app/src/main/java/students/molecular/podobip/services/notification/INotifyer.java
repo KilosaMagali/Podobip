@@ -3,7 +3,7 @@ package students.molecular.podobip.services.notification;
 /**
  * Created by meradi on 28/01/16.
  */
-public interface INotifiyer {
+public interface INotifyer {
 
-    void notifiy();
+    void showNotification();
 }
