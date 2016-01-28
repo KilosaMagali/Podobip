@@ -56,13 +56,15 @@ public class SettingsController extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                }
-                else {
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                Intent data = new Intent();
+                data.putExtra("stepsValue", Integer.parseInt(stepsLabel.getText().toString()));
+                data.putExtra("auto", autoToggle.isChecked());
+                data.putExtra("sound", soundToggle.isChecked());
+                data.putExtra("vibrate", vibrationToggle.isChecked());
+                data.putExtra("light", lightToggle.isChecked());
+
+                setResult(RESULT_OK, data);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

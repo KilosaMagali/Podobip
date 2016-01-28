@@ -1,5 +1,6 @@
 package students.molecular.podobip;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,8 +20,19 @@ import android.widget.GridView;
 
 import students.molecular.podobip.listener.StepListener;
 
+enum NOTIF_MODE {
+    AUTO,
+    VIBRATE,
+    LIGHT,
+    SOUND
+}
+
 public class ViewController extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, StepListener {
+
+    public static final int WIDGET_ACTIVITY = 1;
+    public static final int SETTINGS_ACTIVITY = 2;
+    public static NOTIF_MODE mode = NOTIF_MODE.VIBRATE;
 
     ServiceConnection connection;
     StepAndroidService stepService;
@@ -117,18 +129,6 @@ public class ViewController extends AppCompatActivity
             displayAboutView();
         }
 
-        /*if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -136,7 +136,7 @@ public class ViewController extends AppCompatActivity
 
     private void displayWidgetView() {
         Intent widgetIntent = new Intent(this, WidgetController.class);
-        startActivity(widgetIntent);
+        startActivityForResult(widgetIntent, WIDGET_ACTIVITY);
     }
 
 
@@ -146,8 +146,8 @@ public class ViewController extends AppCompatActivity
     }
 
     private void displaySettingsView() {
-        Intent widgetIntent = new Intent(this, SettingsController.class);
-        startActivity(widgetIntent);
+        Intent settingsIntent = new Intent(this, SettingsController.class);
+        startActivityForResult(settingsIntent, SETTINGS_ACTIVITY);
     }
 
     public void setupItemsAdapter() {
@@ -164,5 +164,55 @@ public class ViewController extends AppCompatActivity
 
     @Override
     public void onStepEvent() {
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK){
+            switch (requestCode) {
+                case WIDGET_ACTIVITY:
+                    handleWidgetViewResult(data);
+                    break;
+                case SETTINGS_ACTIVITY:
+                    handleSettingsViewResult(data);
+                    break;
+            }
+        }
+    }
+
+    private void handleWidgetViewResult(Intent data) {
+        boolean stepsWidget = data.getExtras().getBoolean("stepsWidget");
+        boolean caloriesWidget = data.getExtras().getBoolean("caloriesWidget");
+        boolean distanceWidget = data.getExtras().getBoolean("distanceWidget");
+        boolean positionWidget = data.getExtras().getBoolean("positionWidget");
+
+    }
+
+    private void handleSettingsViewResult(Intent data) {
+        int stepsValue = data.getExtras().getInt("stepsValue");
+        boolean automatic = data.getExtras().getBoolean("auto");
+        boolean sound = data.getExtras().getBoolean("sound");
+        boolean vibrate = data.getExtras().getBoolean("vibrate");
+        boolean light = data.getExtras().getBoolean("light");
+
+        NOTIF_MODE mode;
+
+        if(automatic){
+            mode = NOTIF_MODE.AUTO;
+        }
+        else if(sound){
+            mode = NOTIF_MODE.SOUND;
+        }
+        else if(vibrate){
+            mode = NOTIF_MODE.VIBRATE;
+        }
+        else{
+            mode = NOTIF_MODE.LIGHT;
+        }
+    }
+
+    public static NOTIF_MODE getNotificationMode(){
+        return mode;
     }
 }
