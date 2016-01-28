@@ -1,9 +1,14 @@
 package students.molecular.podobip;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,8 +21,34 @@ import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import students.molecular.podobip.services.StepAndroidService;
+
 public class ViewController extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    ServiceConnection connection;
+    StepAndroidService stepService;
+
+    public ViewController() {
+        private StepAndroidService.ICallback mCallback = new StepAndroidService.ICallback() {
+
+        };
+
+        connection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                stepService = ((StepAndroidService.StepBinder)service).getService();
+
+                stepService.registerCallback(mCallback);
+                stepService.reloadSettings();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +69,13 @@ public class ViewController extends AppCompatActivity
 
         setupItemsAdapter();
 
-        Intent intent = new Intent(ViewController.this, AppService.class);
+        //Intent intent = new Intent(ViewController.this, AppService.class);
+        //startService(intent);
+
+        Intent intent = new Intent(ViewController.this, StepAndroidService.class);
         startService(intent);
+
+        //stopService(intent);
     }
 
     @Override
@@ -128,6 +164,9 @@ public class ViewController extends AppCompatActivity
         String[] content = new String[] {"100KCal.", "20Km", "500 Steps","120min" };
         ItemAdapter itemAdapter = new ItemAdapter(getApplicationContext(),items,content);
         gridView.setAdapter(itemAdapter);
+    }
 
+    private void bindStepService() {
+        bindService(new Intent(ViewController.this, StepAndroidService.class), connection, Context.BIND_AUTO_CREATE + Context.BIND_DEBUG_UNBIND);
     }
 }

@@ -39,7 +39,8 @@
         <activity android:name=".SettingsController">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ViewController" />
         </activity>
+
+        <service android:name=".services.HelloService" android:exported="false"/>
     </application>
-    <service android:enabled="true" android:name="students.molecular.podobip.AppService" />
 
 </manifest>
