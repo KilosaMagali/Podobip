@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -156,4 +155,9 @@ public class GPSTracker extends Service implements StepListener, LocationListene
     public IBinder onBind(Intent arg0) {
         return null;
     }
+
+    public ArrayList<LatLng> getPositions() {
+        return positions;
+    }
+
 }
